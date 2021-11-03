@@ -25,7 +25,7 @@ public class ExceptionResponse implements Serializable
 	
 	private String details;
 	
-	
+	/*
 	public ExceptionResponse() {}
 	
 	public ExceptionResponse(Date timeStamp, 
@@ -33,7 +33,7 @@ public class ExceptionResponse implements Serializable
 	{	this.timeStamp = timeStamp;
 		this.mensagem = mensagem;
 		this.details = details;
-	}
+	}*/
 	
 	public Date getTimeStamp() {return timeStamp;}
 	public void setTimeStamp(Date timeStamp) {this.timeStamp = timeStamp;}
