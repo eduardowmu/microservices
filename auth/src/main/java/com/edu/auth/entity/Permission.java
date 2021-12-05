@@ -38,6 +38,5 @@ public class Permission implements GrantedAuthority, Serializable
 	
 
 	@Override
-	public String getAuthority() 
-	{return this.description;}	
+	public String getAuthority() {return this.description;}	
 }
