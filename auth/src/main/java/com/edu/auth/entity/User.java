@@ -1,6 +1,7 @@
 package com.edu.auth.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +29,11 @@ import lombok.ToString;
 @Table(name="user")
 @Getter
 @Setter
+@AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class user implements UserDetails, Serializable 
+public class User implements UserDetails, Serializable 
 {	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -65,9 +68,14 @@ public class user implements UserDetails, Serializable
 	public Collection<? extends GrantedAuthority> getAuthorities() 
 	{return this.permissions;}
 	
+	/*Criando uma lista de regras para autenticação*/
 	public List<String> getRoles()
-	{
-		return null;
+	{	List<String> roles = new ArrayList<>();
+		/*lambda para cada permissão*/
+		this.permissions.stream().forEach(p -> {
+			roles.add(p.getDescription());
+		});
+		return roles;
 	}
 	
 	@Override public String getPassword() {return this.password;}

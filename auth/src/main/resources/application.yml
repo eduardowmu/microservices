@@ -1,1 +1,30 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /auth
+#banco de dados
+spring:
+  application:
+    name: auth
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MYSQL8Dialect
+#dialect: org.hibernate.dialect.MYSQL8Dialect (na nossa maquina)
+  jmx:
+    enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth?createDatabaseIfNotExist=true&allowPublicKeyRetrival=true&sslMode=DISABLED&useSSL=false&serverTimezone=UTC
+    username: root
+    password:
 
+#Propriedades do spring security. Todos os microserviços
+#vão ter que ter a mesma chave quenao chegar o token.
+security:
+  jwt:
+    token:
+      secret-key: chave_microservice
+      expire-length: 360000
