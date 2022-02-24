@@ -20,6 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ import lombok.ToString;
 @Table(name="user")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode

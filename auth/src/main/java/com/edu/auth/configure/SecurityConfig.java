@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	
 	@Bean
 	@Override
-	public AuthenticationManager authenticationManager() throws Exception
+	public AuthenticationManager authenticationManagerBean() throws Exception
 	{return super.authenticationManagerBean();}
 
 	@Override
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and().authorizeRequests()
 				  /*permitindo acesso sem necessidade de token*/
-				  .antMatchers("/login").permitAll()
+				  //.antMatchers("/login").permitAll()
 				  /*as demais, necessita de authentication*/
 				  .anyRequest().authenticated()
 			.and().apply(new JwtConfigurer(this.jwtTokenProvider));

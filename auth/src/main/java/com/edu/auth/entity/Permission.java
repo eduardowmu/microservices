@@ -33,10 +33,9 @@ public class Permission implements GrantedAuthority, Serializable
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="nome", nullable=false, length=255)
+	@Column(name="description", nullable=false, length=255)
 	private String description;
-	
 
 	@Override
-	public String getAuthority() {return this.description;}	
+	public String getAuthority() {return this.description;}
 }

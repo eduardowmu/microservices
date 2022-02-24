@@ -19,6 +19,7 @@ import com.edu.auth.provider.JwtTokenProvider;
 import com.edu.auth.repository.UserRepository;
 import com.edu.auth.vo.UserVO;
 
+
 //import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -36,17 +37,19 @@ public class AuthController
 		this.userRepository = userRepository;
 	}
 	
-	/*Teste para validarmos nossa aplicação*/
+	/*Teste para validarmos nossa aplicação
 	@RequestMapping("/testeSecurity")
-	public String teste() {return "testado";}
+	public String teste() {return "testado";}*/
 	
-	@PostMapping(produces = {"application/json", 
+	@SuppressWarnings("rawtypes")
+	@PostMapping(value = "/token",
+				produces = {"application/json", 
 							"application/xml", 
 							"application/x-yaml"},
 				consumes = {"application/json", 
 							"application/xml", 
 							"application/x-yaml"})
-	public ResponseEntity<?> login(@RequestBody UserVO userVO)
+	public ResponseEntity login(@RequestBody UserVO userVO)
 	{	try
 		{	var username = userVO.getUserName();
 			var password = userVO.getPassword(); 

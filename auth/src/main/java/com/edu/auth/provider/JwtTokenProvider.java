@@ -1,6 +1,7 @@
 package com.edu.auth.provider;
 
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -53,28 +55,38 @@ public class JwtTokenProvider
 	public String createToken(String userName, List<String> roles)
 	{	Claims claims = Jwts.claims().setSubject(userName);
 		claims.put("roles", roles);
-		/*Ajustando a data de expiração*/
+		//Ajustando a data de expiração
 		Date now = new Date();
 		Date expire = new Date(now.getTime() + this.expireLength);
 		return Jwts.builder().setClaims(claims)
 							.setIssuedAt(now)
 							.setExpiration(expire)
-							/*Assinatura do algoritmo de criptografia*/
+							//Assinatura do algoritmo de criptografia
 							.signWith(SignatureAlgorithm.HS256, this.secretKey)
 							.compact();
 	}
 	
 	public Authentication getAuthentication(String token)
-	{	UserDetails userDetails = this.service.loadUserByUsername(
-			this.getUserName(token));
-		return new UsernamePasswordAuthenticationToken(userDetails, "", 
-				userDetails.getAuthorities());
+	{	UserDetails userDetails = new UserDetails()
+		{	@Override
+			public Collection<? extends GrantedAuthority> getAuthorities() 
+			{return null;}
+
+			@Override public String getPassword() {return "";}
+			@Override public String getUsername() {return "";}
+			@Override public boolean isAccountNonExpired() {return true;}
+			@Override public boolean isAccountNonLocked() {return true;}
+			@Override public boolean isCredentialsNonExpired() {return true;}
+			@Override public boolean isEnabled() {return false;}
+		};
+		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
 	
+	/*
 	private String getUserName(String token)
 	{	return Jwts.parser().setSigningKey(this.secretKey)
 			.parseClaimsJws(token).getBody().getSubject();
-	}
+	}*/
 	
 	/*Método para resolver o token*/
 	public String resolveToken(HttpServletRequest request)
