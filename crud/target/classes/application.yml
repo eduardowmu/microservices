@@ -25,3 +25,10 @@ crud:
   rabbitmq:
     exchange: crude.exchange
     routingkey: crud.produto.routingKey
+    
+eureka:
+  instance: 
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/registry/eureka
