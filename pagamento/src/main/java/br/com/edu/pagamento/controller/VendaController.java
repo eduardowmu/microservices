@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +23,20 @@ import br.com.edu.pagamento.vo.VendaVO;
 @RestController
 @RequestMapping("/venda")
 public class VendaController 
-{	private final VendaService service;
+{	@Value("${server.port}")
+	String port;
+	
+	private final VendaService service;
+	private final PagedResourcesAssembler<VendaVO> assembler;
 	
 	@Autowired
-	public VendaController(VendaService service) 
-	{this.service = service;}
+	public VendaController(VendaService service, PagedResourcesAssembler<VendaVO> assembler) 
+	{	this.service = service;
+		this.assembler = assembler;
+	}
+	
+	@RequestMapping("/mostrarPorta")
+	public String showGate() {return port;}
 	
 	@GetMapping(value = "/{id}", produces = { "application/json", 
 			"application/xml", "application/x-yaml" })
