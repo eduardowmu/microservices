@@ -17,6 +17,18 @@ spring:
   jmx:
     enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/crud?allowPublicKeyRetrival=true&sslMode=DISABLED&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/produto?createDatabaseIfNotExist=true&allowPublicKeyRetrival=true&sslMode=DISABLED&useSSL=false&serverTimezone=UTC
     username: root
     password: 
+
+crud:
+  rabbitmq:
+    exchange: crude.exchange
+    routingkey: crud.produto.routingKey
+    
+eureka:
+  instance: 
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/registry/eureka

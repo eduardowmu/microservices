@@ -1,0 +1,29 @@
+server:
+  port: 8761
+  servlet:
+    context-path: /registry
+#banco de dados
+spring:
+  application:
+    name: registry
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MYSQL8Dialect
+#dialect: org.hibernate.dialect.MYSQL8Dialect (na nossa maquina)
+  jmx:
+    enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/pagamento?createDatabaseIfNotExist=true&allowPublicKeyRetrival=true&sslMode=DISABLED&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
