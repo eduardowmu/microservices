@@ -14,8 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import br.com.edu.pagamento.vo.VendaVO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,4 +50,20 @@ public class Venda implements Serializable
 	
 	@Column(name = "valor", nullable = false, length = 10)
 	private Double valor;
+
+	public Long getId() {return id;}
+	public void setId(Long id) {this.id = id;}
+
+	public Date getData() {return data;}
+	public void setData(Date data) {this.data = data;}
+
+	public List<ProdutoVenda> getProdutos() {return produtos;}
+	public void setProdutos(List<ProdutoVenda> produtos) 
+	{this.produtos = produtos;}
+
+	public Double getValor() {return valor;}
+	public void setValor(Double valor) {this.valor = valor;}
+	
+	public static Venda convert(VendaVO vendaVO)
+	{return new ModelMapper().map(vendaVO, Venda.class);}
 }
