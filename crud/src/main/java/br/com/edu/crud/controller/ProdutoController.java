@@ -75,26 +75,42 @@ public class ProdutoController {
 	 * 
 	 * return new ResponseEntity<>(pageModel, HttpStatus.OK); }
 	 */
-	
+
+	/*
 	@GetMapping(produces = {"application/json", "application/xml",
 			 "application/x-yaml"}) 
-	public List<ProdutoVO> findByAll()
-	{	List<ProdutoVO> produtos = this.service.findAll();
+	public Page<ProdutoVO> findByAll(Pageable pageable)
+	{	Page<ProdutoVO> produtos = this.service.findAll(pageable);
 		produtos.stream().forEach(p -> p.add(linkTo(methodOn(ProdutoController.class)
 				.findById(p.getId())).withSelfRel()));
 		return produtos;
 	}
+	*/
 
-	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
-			"application/json", "application/xml", "application/x-yaml" })
+	@GetMapping(produces = {"application/json", "application/xml",
+			"application/x-yaml"})
+	public ResponseEntity<?> findByAll(@RequestParam(value = "page", defaultValue = "0") int page,
+									   @RequestParam(value = "limit", defaultValue = "12") int limit,
+									   @RequestParam(value = "direction", defaultValue = "asc") String direction)
+	{	var sortDirection = "desc".equals(direction) ? Direction.DESC : Direction.ASC;
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "nome"));
+		Page<ProdutoVO> produtoVOS = this.service.findAll(pageable);
+		produtoVOS.stream().forEach(p -> p.add(linkTo(methodOn(ProdutoController.class)
+				.findById(p.getId())).withSelfRel()));
+		PagedModel<EntityModel<ProdutoVO>> pagedModel = assembler.toModel(produtoVOS);
+		return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+	}
+
+	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" },
+				consumes = { "application/json", "application/xml", "application/x-yaml" })
 	public ProdutoVO create(@RequestBody ProdutoVO produtoVO) {
 		ProdutoVO pVO = this.service.create(produtoVO);
 		pVO.add(linkTo(methodOn(ProdutoController.class).findById(pVO.getId())).withSelfRel());
 		return pVO;
 	}
 
-	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
-			"application/json", "application/xml", "application/x-yaml" })
+	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" },
+				consumes = { "application/json", "application/xml", "application/x-yaml" })
 	public ProdutoVO update(@RequestBody ProdutoVO produtoVO) {
 		ProdutoVO pVO = this.service.update(produtoVO);
 		pVO.add(linkTo(methodOn(ProdutoController.class).findById(pVO.getId())).withSelfRel());

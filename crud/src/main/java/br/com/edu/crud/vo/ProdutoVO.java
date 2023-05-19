@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.hateoas.RepresentationModel;
+
 /*Essa notação que irá definir a órdem
  *que os atributos irão retornar assim
  *que uma requisição for realizada*/
@@ -27,8 +29,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-public class ProdutoVO implements Serializable
+@EqualsAndHashCode(callSuper = false)
+public class ProdutoVO extends RepresentationModel<ProdutoVO> implements Serializable
 {	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("id")

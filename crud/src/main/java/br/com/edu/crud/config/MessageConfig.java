@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MessageConfig 
-{	@Value("${crud.rabbitmq.exchage}")
+{	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
 
 	@Bean
