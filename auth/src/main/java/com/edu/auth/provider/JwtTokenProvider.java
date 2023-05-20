@@ -79,9 +79,9 @@ public class JwtTokenProvider
 	/*Método para resolver o token*/
 	public String resolveToken(HttpServletRequest request)
 	{	String bearerToken = request.getHeader("Authorization");
-		if(bearerToken != null && bearerToken.startsWith("Basic "))
+		if(bearerToken != null && bearerToken.startsWith("Bearer "))
 		/*o numero 7 é a posição após a palavra bearer*/
-		{return bearerToken.substring(6, bearerToken.length());}
+		{return bearerToken.substring(7, bearerToken.length());}
 		
 		return null;
 	}
