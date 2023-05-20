@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 @Entity
-@Table(name="user")
 @Getter
 @Setter
 @Builder
@@ -62,8 +61,8 @@ public class User implements UserDetails, Serializable
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="user_permission", 
-				joinColumns= {@JoinColumn(name="id_user")}, 
-				inverseJoinColumns={@JoinColumn(name="id_permission")})
+			joinColumns= {@JoinColumn(name="id_user")},
+			inverseJoinColumns={@JoinColumn(name="id_permission")})
 	private List<Permission> permissions;
 	
 	@Override
@@ -80,10 +79,29 @@ public class User implements UserDetails, Serializable
 		return roles;
 	}
 	
-	@Override public String getPassword() {return this.password;}
-	@Override public String getUsername() {return this.userName;}
-	@Override public boolean isAccountNonExpired() {return this.accountNonExpired;}
-	@Override public boolean isAccountNonLocked() {return this.accountNonLocked;}
-	@Override public boolean isCredentialsNonExpired() {return this.credentialsNonExpired;}
-	@Override public boolean isEnabled() {return this.enabled;}
+	@Override
+	public String getPassword() {return this.password;}
+
+	@Override
+	public String getUsername() {return this.userName;}
+
+	@Override
+	public boolean isAccountNonExpired() {return this.accountNonExpired;}
+
+	@Override
+	public boolean isAccountNonLocked() {return this.accountNonLocked;}
+
+	@Override
+	public boolean isCredentialsNonExpired() {return this.credentialsNonExpired;}
+
+	@Override
+	public boolean isEnabled() {return this.enabled;}
+
+	public List<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
+	}
 }

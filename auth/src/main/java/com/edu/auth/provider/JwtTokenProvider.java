@@ -38,11 +38,11 @@ public class JwtTokenProvider
 	private String secretKey;
 	
 	@Value("${security.jwt.token.expire-length}")
-	private Long expireLength;
+	private long expireLength;
 	
 	@Qualifier("userService")
 	@Autowired
-	private UserDetailsService service;
+	private UserDetailsService userDetailsService;
 	
 	/*Método para criptografar a senha*/
 	@PostConstruct 
@@ -57,7 +57,7 @@ public class JwtTokenProvider
 		claims.put("roles", roles);
 		//Ajustando a data de expiração
 		Date now = new Date();
-		Date expire = new Date(now.getTime() + this.expireLength);
+		Date expire = new Date(now.getTime() + expireLength);
 		return Jwts.builder().setClaims(claims)
 							.setIssuedAt(now)
 							.setExpiration(expire)
@@ -67,33 +67,21 @@ public class JwtTokenProvider
 	}
 	
 	public Authentication getAuthentication(String token)
-	{	UserDetails userDetails = new UserDetails()
-		{	@Override
-			public Collection<? extends GrantedAuthority> getAuthorities() 
-			{return null;}
-
-			@Override public String getPassword() {return "";}
-			@Override public String getUsername() {return "";}
-			@Override public boolean isAccountNonExpired() {return true;}
-			@Override public boolean isAccountNonLocked() {return true;}
-			@Override public boolean isCredentialsNonExpired() {return true;}
-			@Override public boolean isEnabled() {return false;}
-		};
+	{	UserDetails userDetails = this.userDetailsService.loadUserByUsername(this.getUserName(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
 	
-	/*
 	private String getUserName(String token)
 	{	return Jwts.parser().setSigningKey(this.secretKey)
 			.parseClaimsJws(token).getBody().getSubject();
-	}*/
+	}
 	
 	/*Método para resolver o token*/
 	public String resolveToken(HttpServletRequest request)
 	{	String bearerToken = request.getHeader("Authorization");
-		if(bearerToken != null && bearerToken.startsWith("Bearer "))
+		if(bearerToken != null && bearerToken.startsWith("Basic "))
 		/*o numero 7 é a posição após a palavra bearer*/
-		{return bearerToken.substring(7, bearerToken.length());}
+		{return bearerToken.substring(6, bearerToken.length());}
 		
 		return null;
 	}

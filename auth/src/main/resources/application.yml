@@ -22,7 +22,7 @@ spring:
     password:
 
 #Propriedades do spring security. Todos os microserviços
-#vão ter que ter a mesma chave quenao chegar o token.
+#vão ter que ter a mesma chave que nao chegar o token.
 security:
   jwt:
     token:
